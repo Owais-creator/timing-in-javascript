@@ -2,56 +2,55 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Digital Clock</title>
+<title>clock</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
 
-  body {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #121212; /* dark background */
-    font-family: 'Orbitron', sans-serif;
-  }
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #121212;
+  font-family: 'Orbitron', sans-serif;
+}
 
-  .clock-circle {
-    width: 360px;
-    height: 360px;
-    border-radius: 50%;
-    background: rgba(30, 30, 30, 0.6); /* slightly transparent black */
-    border: 4px solid #555; /* subtle grey border */
-    box-shadow:
-      0 0 10px #555; /* subtle shadow */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    animation: jumpIn 1s ease-out;
-  }
+.clock-circle {
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  background: rgba(30,30,30,0.6);
+  border: 4px solid #555;
+  box-shadow: 0 0 10px #555;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  animation: jumpIn 1s ease-out;
+}
 
-  .clock-circle h1 {
-    font-size: 2.5em;
-    margin: 0;
-    color: #ccc; /* light grey */
-    text-shadow: 0 0 3px #888; /* subtle shadow */
-  }
+.clock-circle h1 {
+  font-size: 2.5em;
+  margin: 0;
+  color: #ccc;
+  text-shadow: 0 0 3px #888;
+}
 
-  .clock-circle p {
-    font-size: 1.8em;
-    margin: 5px 0;
-    color: #aaa; /* grey */
-    text-shadow: 0 0 2px #666; /* subtle shadow */
-  }
+.clock-circle p {
+  font-size: 1.8em;
+  margin: 5px 0;
+  color: #aaa;
+  text-shadow: 0 0 2px #666;
+}
 
-  @keyframes jumpIn {
-    0% { transform: translateY(-200px) scale(0.5); opacity: 0; }
-    60% { transform: translateY(20px) scale(1.1); opacity: 1; }
-    80% { transform: translateY(-10px) scale(0.95); }
-    100% { transform: translateY(0) scale(1); }
-  }
+@keyframes jumpIn {
+  0% { transform: translateY(-200px) scale(0.5); opacity: 0; }
+  60% { transform: translateY(20px) scale(1.1); opacity: 1; }
+  80% { transform: translateY(-10px) scale(0.95); }
+  100% { transform: translateY(0) scale(1); }
+}
 </style>
 </head>
 <body>
@@ -78,20 +77,28 @@ function updateClock() {
   let year = now.getFullYear();
   document.getElementById("date").innerText = `${date} ${month} ${year}`;
 
-  // Time in 24-hour format
-  let hours = now.getHours();
+  // Time in 12-hour format
+  let hours = now.getHours();  // 0-23
   let minutes = now.getMinutes();
   let seconds = now.getSeconds();
+  
+  let ampm = hours >= 12 ? "PM" : "AM"; // Determine AM or PM
 
-  if(hours < 10) hours = "0" + hours;
-  if(minutes < 10) minutes = "0" + minutes;
-  if(seconds < 10) seconds = "0" + seconds;
+  // Convert 24-hour to 12-hour format
+  hours = hours % 12;
+  if (hours === 0) hours = 12; // 0 hours = 12 AM or PM
 
-  document.getElementById("time").innerText = `${hours}:${minutes}:${seconds}`;
+  // Add leading zeros
+  hours = hours < 10 ? "0" + hours : hours;
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+  seconds = seconds < 10 ? "0" + seconds : seconds;
+
+  document.getElementById("time").innerText = `${hours}:${minutes}:${seconds} ${ampm}`;
 }
 
-// Call every second
+// Initial call
 updateClock();
+// Update every second
 setInterval(updateClock, 1000);
 </script>
 
