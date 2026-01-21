@@ -1,99 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Stylish Live Clock</title>
-  <style>
-    
-    body {
-      font-family: 'Courier New', monospace;
-      background: linear-gradient(120deg, #1e3c72, #2a5298);
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      text-align: center;
-    }
+<meta charset="UTF-8">
+<title>Grey Circular Clock</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
 
-  
-    .clock-box {
-      background: rgba(0, 0, 0, 0.25);
-      padding: 40px 60px;
-      border-radius: 25px;
-      box-shadow: 0 0 30px rgba(0,0,0,0.5);
-      display: inline-block;
-      animation: pulse 2s infinite;
-    }
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #121212; /* dark background */
+    font-family: 'Orbitron', sans-serif;
+  }
 
-   
-    h1 {
-      font-size: 2.8em;
-      margin-bottom: 20px;
-      text-shadow: 2px 2px 5px rgba(0,0,0,0.4);
-    }
+  .clock-circle {
+    width: 360px;
+    height: 360px;
+    border-radius: 50%;
+    background: rgba(30, 30, 30, 0.6); /* slightly transparent black */
+    border: 4px solid #555; /* subtle grey border */
+    box-shadow:
+      0 0 10px #555; /* subtle shadow */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    animation: jumpIn 1s ease-out;
+  }
 
-    
-    .clock-box p {
-      font-size: 2em;
-      margin: 8px 0;
-      text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
-    }
+  .clock-circle h1 {
+    font-size: 2.5em;
+    margin: 0;
+    color: #ccc; /* light grey */
+    text-shadow: 0 0 3px #888; /* subtle shadow */
+  }
 
-    @keyframes pulse {
-      0% { box-shadow: 0 0 20px rgba(0,0,0,0.3);}
-      50% { box-shadow: 0 0 35px rgba(0,0,0,0.6);}
-      100% { box-shadow: 0 0 20px rgba(0,0,0,0.3);}
-    }
-  </style>
+  .clock-circle p {
+    font-size: 1.8em;
+    margin: 5px 0;
+    color: #aaa; /* grey */
+    text-shadow: 0 0 2px #666; /* subtle shadow */
+  }
+
+  @keyframes jumpIn {
+    0% { transform: translateY(-200px) scale(0.5); opacity: 0; }
+    60% { transform: translateY(20px) scale(1.1); opacity: 1; }
+    80% { transform: translateY(-10px) scale(0.95); }
+    100% { transform: translateY(0) scale(1); }
+  }
+</style>
 </head>
 <body>
 
-  <div class="clock-box">
-    <h1>Live Clock</h1>
-    <p id="day"></p>
-    <p id="date"></p>
-    <p id="time"></p>
-  </div>
+<div class="clock-circle">
+  <h1>Live Clock</h1>
+  <p id="day"></p>
+  <p id="date"></p>
+  <p id="time"></p>
+</div>
 
-  <script>
-    function updateClock() {
-      let now = new Date();
+<script>
+function updateClock() {
+  let now = new Date();
 
-     
-      let dayNames = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-      let day = dayNames[now.getDay()];
-      document.getElementById("day").innerText = day;
+  // Day
+  let dayNames = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  document.getElementById("day").innerText = dayNames[now.getDay()];
 
-     
-      let date = now.getDate();
-      let monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-      let month = monthNames[now.getMonth()];
-      let year = now.getFullYear();
-      document.getElementById("date").innerText = `${date} ${month} ${year}`;
+  // Date
+  let monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  let date = now.getDate();
+  let month = monthNames[now.getMonth()];
+  let year = now.getFullYear();
+  document.getElementById("date").innerText = `${date} ${month} ${year}`;
 
-     
-      let hours = now.getHours();
-      let minutes = now.getMinutes();
-      let seconds = now.getSeconds();
-      let ampm = hours >= 12 ? "PM" : "AM";
+  // Time in 24-hour format
+  let hours = now.getHours();
+  let minutes = now.getMinutes();
+  let seconds = now.getSeconds();
 
-      if(hours > 12) hours -= 12;
-      if(hours === 0) hours = 12;
+  if(hours < 10) hours = "0" + hours;
+  if(minutes < 10) minutes = "0" + minutes;
+  if(seconds < 10) seconds = "0" + seconds;
 
-     
-      minutes = minutes < 10 ? "0" + minutes : minutes;
-      seconds = seconds < 10 ? "0" + seconds : seconds;
+  document.getElementById("time").innerText = `${hours}:${minutes}:${seconds}`;
+}
 
-      document.getElementById("time").innerText = `${hours}:${minutes}:${seconds} ${ampm}`;
-    }
-
-    
-    updateClock();
-    
-    setInterval(updateClock, 1000);
-  </script>
+// Call every second
+updateClock();
+setInterval(updateClock, 1000);
+</script>
 
 </body>
 </html>
